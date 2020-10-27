@@ -1,2 +1,2 @@
 # learn_shippy
-learn shippy
+learn shippy with go
