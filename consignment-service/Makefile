@@ -1,2 +1,2 @@
 build:
-	/usr/local/protobuf/bin/protoc -I. --go_out=plugins=grpc:$(GOPATH)/src/learn_shippy/consignment-service proto/consignment/consignment.proto
+	protoc -I. --go_out=plugins=grpc:$(GOPATH)/src/learn_shippy/consignment-service proto/consignment/consignment.proto
