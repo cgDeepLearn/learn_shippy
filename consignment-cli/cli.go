@@ -4,7 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"google.golang.org/grpc"
+	microclient "github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/config/cmd"
 	"io/ioutil"
 	pb "learn_shippy/consignment-service/proto/consignment"
 	"log"
@@ -32,14 +33,9 @@ func parseFile(fileName string) (*pb.Consignment, error) {
 
 func main() {
 	// 连接到 gRPC 服务器
-	conn, err := grpc.Dial(ADDRESS, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("connect error: %v", err)
-	}
-	defer conn.Close()
-
-	// 初始化 gRPC 客户端
-	client := pb.NewShippingServiceClient(conn)
+	cmd.Init()
+	// Create new  client
+	client := pb.NewShippingService("go.micro.srv.consignment", microclient.DefaultClient)
 
 	// 在命令行中指定新的货物信息 json 文件
 	infoFile := DEFAULT_INFO_FILE
@@ -55,7 +51,7 @@ func main() {
 
 	// 调用 RPC
 	// 将货物存储到我们自己的仓库里
-	resp, err := client.CreateConsignment(context.Background(), consignment)
+	resp, err := client.CreateConsignment(context.TODO(), consignment)
 	if err != nil {
 		log.Fatalf("create consignment error: %v", err)
 	}
